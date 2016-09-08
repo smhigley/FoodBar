@@ -14,6 +14,7 @@ import {
   View,
   ListView
 } from 'react-native';
+import { API } from './config';
 
 class FoodBar extends Component {
   render() {
@@ -80,11 +81,10 @@ class Content extends Component {
   }
 
   getApiResults(query) {
-    let url = 'https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/search?cuisine=Asian&intolerances=corn&limitLicense=false&number=10&offset=0&query=' + query,
-    //let url='https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/autocomplete?number=10&query=' + query,
+    let url = API.uri + '/recipes/search?cuisine=Asian&intolerances=corn&limitLicense=false&number=10&offset=0&query=' + query,
         request = new Request(url, {
           headers: new Headers({
-            'X-Mashape-Key': 'MRBGGtmqTwmshm8YTwIx4D9ZSCcmp1oJ2y4jsnPyjVdNievjJD',
+            'X-Mashape-Key': API.key,
             //'Accept': 'application/json'
           })
         });
