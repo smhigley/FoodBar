@@ -11,7 +11,8 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  View
+  View,
+  ListView
 } from 'react-native';
 
 class FoodBar extends Component {
@@ -47,19 +48,77 @@ class Footer extends Component {
   }
 }
 
+class RecipeList extends Component {
+
+  renderRow(recipe) {
+    return (
+      <View>
+        <Text>{recipe.title}</Text>
+      </View>
+    )
+  }
+
+  render() {
+    return(
+      <ListView
+        dataSource={this.props.recipes}
+        renderRow={this.renderRow.bind(this)}
+      />
+    )
+  }
+}
+
 class Content extends Component {
   constructor(props) {
     super(props);
-    this.state = {text: ''};
+    this.state = {
+      search: '',
+      dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id}),
+      recipes: {}
+    };
+    this.state.recipes = this.state.dataSource.cloneWithRows([]);
   }
+
+  getApiResults(query) {
+    let url = 'https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/search?cuisine=Asian&intolerances=corn&limitLicense=false&number=10&offset=0&query=' + query,
+    //let url='https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/autocomplete?number=10&query=' + query,
+        request = new Request(url, {
+          headers: new Headers({
+            'X-Mashape-Key': 'MRBGGtmqTwmshm8YTwIx4D9ZSCcmp1oJ2y4jsnPyjVdNievjJD',
+            //'Accept': 'application/json'
+          })
+        });
+    console.log("searching url: " + url);
+    fetch(request)
+      .then((res) => res.json())
+      .then((data) => {
+        let recipeList = this.state.dataSource.cloneWithRows(data.results);
+        this.setState({recipes: recipeList});
+        console.log(recipeList);
+      })
+      .catch((error) => console.log("Oops, there was a problem:", error));
+  }
+
+  searchRecipes = (searchString) => {
+    console.log("searched: " + searchString);
+    this.getApiResults(searchString);
+  }
+
   render() {
     return (
       <View style={styles.main}>
-        <TextInput
-          style={styles.searchbar}
-          placeholder="Search recipes"
-          //onChangeText={(text) => this.setState({text})}
-        />
+        <View style={styles.searchBar}>
+          <TextInput
+            style={styles.searchInput}
+            value={this.state.search}
+            placeholder="Search recipes"
+            onSubmitEditing={(event) => this.searchRecipes(event.nativeEvent.text)}
+            onChangeText={(search) => this.setState({search})}
+          />
+        </View>
+        <View>
+          <RecipeList recipes={this.state.recipes} />
+        </View>
         <Text style={styles.instructions}>
           Press Cmd+R to reload,{'\n'}
           Cmd+D or shake for dev menu
@@ -77,12 +136,6 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
     backgroundColor: '#F5FCFF',
   },
-  searchbar: {
-    height: 40,
-    borderWidth: 1,
-    borderColor: '#666666',
-    borderStyle: 'solid'
-  },
   instructions: {
     textAlign: 'center',
     color: '#333333',
@@ -99,7 +152,21 @@ const styles = StyleSheet.create({
   main: {
     flex: 1,
     padding: 20,
-  }
+  },
+  searchBar: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  searchInput: {
+    flex: 1,
+    height: 40,
+    padding: 5,
+    borderWidth: 1,
+    borderColor: '#48BBEC',
+    borderRadius: 8,
+    color: '#48BBEC',
+    marginRight: 5
+  },
 });
 
 AppRegistry.registerComponent('FoodBar', () => FoodBar);
