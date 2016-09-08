@@ -119,10 +119,6 @@ class Content extends Component {
         <View>
           <RecipeList recipes={this.state.recipes} />
         </View>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
       </View>
     )
   }
@@ -135,11 +131,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'stretch',
     backgroundColor: '#F5FCFF',
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
   },
   header: {
     height: 40,
