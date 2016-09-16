@@ -11,19 +11,72 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  TouchableHighlight,
   View,
+  Image,
   ListView
 } from 'react-native';
+import RecipeList from './components/RecipeList';
 import { API } from './config';
+
+const tempData = [ { id: 112305,
+	          title: 'Chicken Samlá (Cambodian Chicken Curry)',
+	          readyInMinutes: 45,
+	          image: 'chicken-saml-cambodian-chicken-curry-112305.jpg',
+	          imageUrls: [ 'chicken-saml-cambodian-chicken-curry-112305.jpg' ] },
+	        { id: 472214,
+	          title: 'Chicken Chicken Curry',
+	          readyInMinutes: 85,
+	          image: 'Chicken-Chicken-Curry-472214.jpg',
+	          imageUrls: [ 'Chicken-Chicken-Curry-472214.jpg' ] },
+	        { id: 17816,
+	          title: 'Chicken Potstickers',
+	          readyInMinutes: 19,
+	          image: 'chicken-potstickers-2-17816.jpg',
+	          imageUrls: [ 'chicken-potstickers-2-17816.jpg' ] },
+	        { id: 32068,
+	          title: 'Chicken Curry',
+	          readyInMinutes: 33,
+	          image: 'chicken-curry-2-32068.jpg',
+	          imageUrls: [ 'chicken-curry-2-32068.jpg' ] },
+	        { id: 39180,
+	          title: 'Chicken Ramen',
+	          readyInMinutes: 64,
+	          image: 'chicken_ramen-39180.jpg',
+	          imageUrls: [ 'chicken_ramen-39180.jpg', 'chicken-ramen-2-39180.jpg' ] },
+	        { id: 74396,
+	          title: 'Tandoori Chicken',
+	          readyInMinutes: 45,
+	          image: 'tandoori-chicken-74396.jpg',
+	          imageUrls: [ 'tandoori-chicken-74396.jpg' ] },
+	        { id: 83200,
+	          title: 'Chicken Curry',
+	          readyInMinutes: 100,
+	          image: 'chicken_curry-83200.jpg',
+	          imageUrls: [ 'chicken_curry-83200.jpg', 'chicken-curry-2-83200.jpg' ] },
+	        { id: 136526,
+	          title: 'Chicken Curry',
+	          readyInMinutes: 45,
+	          image: 'chicken-curry-2-136526.png',
+	          imageUrls: [ 'chicken-curry-2-136526.png', 'chicken_curry-136526.jpg' ] },
+	        { id: 137102,
+	          title: 'Butter Chicken',
+	          readyInMinutes: 70,
+	          image: 'butter-chicken-2-137102.jpg',
+	          imageUrls: [ 'butter-chicken-2-137102.jpg', 'butter_chicken-137102.jpg' ] },
+	        { id: 152697,
+	          title: 'Chicken Vindaloo',
+	          readyInMinutes: 45,
+	          image: 'chicken-vindaloo-152697.jpg',
+	          imageUrls: [ 'chicken-vindaloo-152697.jpg' ] } ]
 
 class FoodBar extends Component {
   render() {
     return (
-      <View style={styles.container}>
+      <Image style={styles.container} source={require('./assets/app-bg.jpg')}>
         <Header />
         <Content />
-        <Footer />
-      </View>
+      </Image>
     );
   }
 }
@@ -32,39 +85,9 @@ class Header extends Component {
   render() {
     return(
       <View style={styles.header}>
-        <Text>FoodBar</Text>
+        <Image source={require('./assets/logo.png')} style={styles.logo} />
+        <Text style={styles.logotype}>FoodBar</Text>
       </View>
-    )
-  }
-}
-
-class Footer extends Component {
-  render() {
-    return (
-      <View style={styles.footer}>
-        <Text>Next</Text>
-        <Text>Previous</Text>
-      </View>
-    )
-  }
-}
-
-class RecipeList extends Component {
-
-  renderRow(recipe) {
-    return (
-      <View>
-        <Text>{recipe.title}</Text>
-      </View>
-    )
-  }
-
-  render() {
-    return(
-      <ListView
-        dataSource={this.props.recipes}
-        renderRow={this.renderRow.bind(this)}
-      />
     )
   }
 }
@@ -81,14 +104,13 @@ class Content extends Component {
   }
 
   getApiResults(query) {
-    let url = API.uri + '/recipes/search?cuisine=Asian&intolerances=corn&limitLicense=false&number=10&offset=0&query=' + query,
+    /*let url = API.uri + '/recipes/search?cuisine=Asian&intolerances=corn&limitLicense=false&number=10&offset=0&query=' + query,
         request = new Request(url, {
           headers: new Headers({
             'X-Mashape-Key': API.key,
             //'Accept': 'application/json'
           })
         });
-    console.log("searching url: " + url);
     fetch(request)
       .then((res) => res.json())
       .then((data) => {
@@ -96,11 +118,16 @@ class Content extends Component {
         this.setState({recipes: recipeList});
         console.log(recipeList);
       })
-      .catch((error) => console.log("Oops, there was a problem:", error));
+      .catch((error) => console.log("Oops, there was a problem:", error));*/
+
+    // temp styling code
+    setTimeout(() => {
+      let recipeList = this.state.dataSource.cloneWithRows(tempData);
+      this.setState({recipes: recipeList});
+    }, 100);
   }
 
   searchRecipes = (searchString) => {
-    console.log("searched: " + searchString);
     this.getApiResults(searchString);
   }
 
@@ -111,11 +138,15 @@ class Content extends Component {
           <TextInput
             style={styles.searchInput}
             value={this.state.search}
-            placeholder="Search recipes"
+            placeholder='Search recipes'
+            placeholderTextColor='#5E9ECA'
             onSubmitEditing={(event) => this.searchRecipes(event.nativeEvent.text)}
             onChangeText={(search) => this.setState({search})}
           />
         </View>
+        <TouchableHighlight style={styles.button}>
+          <Text style={styles.buttonText}>Advanced Search</Text>
+        </TouchableHighlight>
         <View>
           <RecipeList recipes={this.state.recipes} />
         </View>
@@ -127,18 +158,26 @@ class Content extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    width: undefined,
+    height: undefined,
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'stretch',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: 'transparent',
   },
   header: {
-    height: 40,
-    backgroundColor: 'skyblue'
+    alignItems: 'center',
+    paddingTop: 20,
   },
-  footer: {
-    height: 30,
-    backgroundColor: 'steelblue'
+  logo: {
+    width: 200,
+    height: 222,
+    marginLeft: -40
+  },
+  logotype: {
+    marginTop: 8,
+    fontSize: 40,
+    color: '#FFFFFF'
   },
   main: {
     flex: 1,
@@ -151,13 +190,22 @@ const styles = StyleSheet.create({
   searchInput: {
     flex: 1,
     height: 40,
-    padding: 5,
-    borderWidth: 1,
-    borderColor: '#48BBEC',
+    padding: 10,
+    backgroundColor: 'rgba(255, 255, 255, 0.7)',
     borderRadius: 8,
-    color: '#48BBEC',
-    marginRight: 5
+    color: '#5E9ECA',
   },
+  button: {
+    height: 40,
+    padding: 10,
+    marginTop: 10,
+    borderRadius: 8,
+    alignItems: 'center',
+    backgroundColor: '#5E7944',
+  },
+  buttonText: {
+    color: '#1B211D'
+  }
 });
 
 AppRegistry.registerComponent('FoodBar', () => FoodBar);
