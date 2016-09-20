@@ -2,13 +2,12 @@
 
 import React, { Component } from 'react';
 import {
-  StyleSheet,
   View,
   Text,
   ListView
 } from 'react-native';
 
-export default class RecipeList extends Component {
+export default class ResultsScene extends Component {
   renderRow(recipe) {
     return (
       <View>
@@ -20,7 +19,7 @@ export default class RecipeList extends Component {
   render() {
     return(
       <ListView
-        dataSource={this.props.recipes}
+        dataSource={this.props.data}
         renderRow={this.renderRow.bind(this)}
       />
     );
