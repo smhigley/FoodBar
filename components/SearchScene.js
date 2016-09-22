@@ -81,10 +81,8 @@ export default class HomeScene extends Component {
     super(props);
     this.state = {
       search: '',
-      dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id}),
-      recipes: {}
+      dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id})
     };
-    this.state.recipes = this.state.dataSource.cloneWithRows([]);
   }
 
   getApiResults(query) {
@@ -100,7 +98,6 @@ export default class HomeScene extends Component {
       .then((res) => res.json())
       .then((data) => {
         let recipeList = this.state.dataSource.cloneWithRows(data.results);
-        this.setState({recipes: recipeList});
         console.log(recipeList);
       })
       .catch((error) => console.log("Oops, there was a problem:", error));*/
@@ -108,7 +105,12 @@ export default class HomeScene extends Component {
     // temp styling code
     setTimeout(() => {
       let recipeList = this.state.dataSource.cloneWithRows(tempData);
-      this.setState({recipes: recipeList});
+      this.props.navigator.push({
+        name: 'Results',
+        passProps: {
+          data: recipeList
+        }
+      });
     }, 100);
   }
 
@@ -134,8 +136,6 @@ export default class HomeScene extends Component {
           <TouchableHighlight style={styles.button}>
             <Text style={styles.buttonText}>Advanced Search</Text>
           </TouchableHighlight>
-
-          <ResultsScene data={this.state.recipes} />
         </View>
       </View>
     );
