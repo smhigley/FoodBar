@@ -19,23 +19,23 @@ import {
 } from 'react-native';
 
 import styles from './constants/styles.js';
-import ResultsScene from './components/ResultsScene';
 import SearchScene from './components/SearchScene';
+import ResultsScene from './components/ResultsScene';
 import { API } from './config';
 
 class FoodBar extends Component {
   renderScene(route, navigator) {
-    if (route.name == 'Search') {
+    if (route.title == 'Search') {
       return <SearchScene navigator={navigator} {...route.passProps} />
     }
-    if (route.name == 'Results') {
+    if (route.title == 'Results') {
       return <ResultsScene navigator={navigator} {...route.passProps} />
     }
   }
   render() {
     return (
       <Image style={styles.container} source={require('./assets/app-bg.jpg')}>
-        <Navigator style={{ flex:1 }} initialRoute={{ name: 'Search' }} renderScene={ this.renderScene } />
+        <Navigator style={{ flex:1 }} initialRoute={{ title: 'Search', index: 0 }} renderScene={ this.renderScene } />
       </Image>
     );
   }

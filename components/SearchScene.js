@@ -11,7 +11,6 @@ import {
 } from 'react-native';
 
 import styles from '../constants/styles.js';
-import ResultsScene from '../components/ResultsScene';
 
 // temporary global data so we don't need to query the API while creating styles
 const tempData = [ { id: 112305,
@@ -64,6 +63,7 @@ const tempData = [ { id: 112305,
             readyInMinutes: 45,
             image: 'chicken-vindaloo-152697.jpg',
             imageUrls: [ 'chicken-vindaloo-152697.jpg' ] } ];
+const tempBaseUri = "https://spoonacular.com/recipeImages/";
 
 class Logo extends Component {
   render() {
@@ -76,7 +76,7 @@ class Logo extends Component {
   }
 }
 
-export default class HomeScene extends Component {
+export default class SearchScene extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -106,9 +106,11 @@ export default class HomeScene extends Component {
     setTimeout(() => {
       let recipeList = this.state.dataSource.cloneWithRows(tempData);
       this.props.navigator.push({
-        name: 'Results',
+        title: 'Results',
+        index: 1,
         passProps: {
-          data: recipeList
+          data: recipeList,
+          baseUri: tempBaseUri
         }
       });
     }, 100);

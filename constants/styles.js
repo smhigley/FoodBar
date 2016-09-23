@@ -5,6 +5,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: undefined,
     height: undefined,
+    paddingTop: 30,
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'stretch',
@@ -12,7 +13,6 @@ const styles = StyleSheet.create({
   },
   header: {
     alignItems: 'center',
-    paddingTop: 20,
   },
   logo: {
     width: 200,
@@ -27,6 +27,9 @@ const styles = StyleSheet.create({
   main: {
     flex: 1,
     padding: 20,
+  },
+  title: {
+    fontSize: 24
   },
   searchBar: {
     flexDirection: 'row',
@@ -50,6 +53,29 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: '#1B211D'
+  },
+  // results listing
+  resultBox: {
+    flexDirection: 'row',
+    alignItems: 'stretch',
+    marginBottom: 6,
+    padding: 8,
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+  },
+  resultThumb: {
+    flex: 1,
+    resizeMode: 'cover'
+  },
+  resultText: {
+    flex: 4,
+    paddingLeft: 8
+  },
+  resultTitle: {
+    fontSize: 24
+  },
+  resultMeta: {
+    fontSize: 14,
+    color: '#333'
   }
 });
 
