@@ -71,7 +71,8 @@ const styles = StyleSheet.create({
     paddingLeft: 8
   },
   resultTitle: {
-    fontSize: 24
+    fontSize: 18,
+    marginBottom: 6
   },
   resultMeta: {
     fontSize: 14,

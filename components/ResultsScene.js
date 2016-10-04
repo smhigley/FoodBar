@@ -5,24 +5,34 @@ import {
   View,
   Text,
   Image,
-  ListView
+  ListView,
+  TouchableHighlight
 } from 'react-native';
+
+import { getRecipe } from '../utils/ApiHelper';
 import styles from '../constants/styles.js';
 
 export default class ResultsScene extends Component {
+  goToRecipe(id) {
+    console.log('going to recipe', id);
+    getRecipe.call(this, id);
+  }
   renderRow(recipe) {
     return (
-      <View style={styles.resultBox}>
-        <Image style={styles.resultThumb} source={{uri: this.props.baseUri + recipe.image}} />
-        <View style={styles.resultText}>
-          <Text style={styles.resultTitle}>{recipe.title}</Text>
-          <Text style={styles.resultMeta}>Read in {recipe.readyInMinutes} minutes</Text>
+      <TouchableHighlight style={styles.resultBox} onPress={this.goToRecipe.bind(this, recipe.id)}>
+        <View>
+          <Image style={styles.resultThumb} source={{uri: this.props.baseUri + recipe.image}} />
+          <View style={styles.resultText}>
+            <Text style={styles.resultTitle}>{recipe.title}</Text>
+            <Text style={styles.resultMeta}>Read in {recipe.readyInMinutes} minutes</Text>
+          </View>
         </View>
-      </View>
+      </TouchableHighlight>
     )
   }
 
   render() {
+    console.log('rendering results scene');
     return(
       <View>
         <Text style={styles.title}>Results for Chicken</Text>

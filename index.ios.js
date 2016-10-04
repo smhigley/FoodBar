@@ -21,7 +21,7 @@ import {
 import styles from './constants/styles.js';
 import SearchScene from './components/SearchScene';
 import ResultsScene from './components/ResultsScene';
-import { API } from './config';
+import RecipeScene from './components/RecipeScene';
 
 class FoodBar extends Component {
   renderScene(route, navigator) {
@@ -30,6 +30,9 @@ class FoodBar extends Component {
     }
     if (route.title == 'Results') {
       return <ResultsScene navigator={navigator} {...route.passProps} />
+    }
+    if (route.title == 'Recipe Card') {
+      return <RecipeScene navigator={navigator} {...route.passProps} />
     }
   }
   render() {
